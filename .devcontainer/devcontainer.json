@@ -1,6 +1,6 @@
 {
-	"name": "kargo-quickstart",
-	"image": "quay.io/akuity/argo-cd-learning-assets/akuity-devcontainer:0.2.0",
+	"name": "workflows-training",
+	"image": "quay.io/akuity/argo-cd-learning-assets/akuity-devcontainer:0.2.1",
 
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {
@@ -10,7 +10,15 @@
 	},
 	
 	"hostRequirements": {
-		"cpus": 4
+		"cpus": 2
+	},
+
+	"forwardPorts": [
+		2746
+	],
+
+	"portsAttributes": {
+		"2746": { "label": "Argo Server" }
 	},
 
 	"postCreateCommand": "/bin/bash -c .devcontainer/post-create.sh",

@@ -1,3 +1,10 @@
 # Argo Workflows Codespaces Template
 
-These are the supporting files for Argo Workflows Training.
+A GitHub Codespaces repository for Argo Workflows Training.
+
+
+## Start Argo Server
+
+```
+argo server --auth-mode=server --secure=false -n argo
+```

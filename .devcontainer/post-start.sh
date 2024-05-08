@@ -4,7 +4,7 @@
 echo "post-start start" >> ~/.status.log
 
 ## Export Kubeconfig 
-kind export kubeconfig --name kargo-quickstart | tee -a ~/.status.log
+# kind export kubeconfig --name workflows | tee -a ~/.status.log
 
 ## Best effort env loading
 source ~/.bashrc
