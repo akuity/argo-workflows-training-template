@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+spec:
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      volumes:
+        - name: data
+          emptyDir: {}
+          # persistentVolumeClaim:
+          #   claimName: minio
+      containers:
+        - name: minio
+          image: quay.io/minio/minio:latest
+          livenessProbe:
+            httpGet:
+              path: /minio/health/live
+              port: 9000
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /minio/health/ready
+              port: 9000
+            periodSeconds: 20
+          volumeMounts:
+            - mountPath: /data
+              name: data
+          command:
+            - /bin/bash
+            - -c
+          args:
+            - minio server /data --console-address :9090
+          env:
+            - name: MINIO_ACCESS_KEY
+              value: admin
+            - name: MINIO_SECRET_KEY
+              value: password

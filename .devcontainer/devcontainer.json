@@ -14,11 +14,13 @@
 	},
 
 	"forwardPorts": [
-		2746
+		2746,
+		9090
 	],
 
 	"portsAttributes": {
-		"2746": { "label": "Argo Server" }
+		"2746": { "label": "Argo Server" },
+		"9090": { "label": "Minio" }
 	},
 
 	"postCreateCommand": "/bin/bash -c .devcontainer/post-create.sh",

@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- cluster-install
+
+images:
+  - name: quay.io/argoproj/argocli
+    newTag: v3.5.6
+  - name: quay.io/argoproj/workflow-controller
+    newTag: v3.5.6
+
+patches:
+  - path: argo-server-nodeport.yaml
