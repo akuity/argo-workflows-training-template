@@ -4,3 +4,6 @@ metadata:
   name: argo-server
 spec:
   type: NodePort
+  ports:
+    - port: 2746
+      nodePort: 32746

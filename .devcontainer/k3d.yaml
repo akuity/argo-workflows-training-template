@@ -1,0 +1,43 @@
+# https://k3d.io/v5.4.1/usage/configfile/#all-options-example
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: default
+servers: 1
+# network: k3d
+kubeAPI:
+  hostIP: "0.0.0.0"
+  hostPort: "6443"
+image: rancher/k3s:v1.27.13-k3s1
+volumes:
+  - volume: /minio:/minio
+    nodeFilters:
+      - server:0
+ports:
+  - port: 32746:32746
+    nodeFilters:
+      - server:0
+  - port: 30090:30090
+    nodeFilters:
+      - server:0
+  - port: 8080:80 # same as `--port '8080:80@loadbalancer'`
+    nodeFilters:
+      - loadbalancer
+options:
+  k3d:
+    wait: true
+    timeout: "60s"
+    # disableLoadbalancer: false # same as `--no-lb`
+    # disableImageVolume: false # same as `--no-image-volume`
+    # disableRollback: false # same as `--no-Rollback`
+    # loadbalancer:
+    #   configOverrides:
+    #     - settings.workerConnections=2048
+  k3s:
+    extraArgs:
+      - arg: --tls-san=127.0.0.1
+        nodeFilters:
+          - server:*
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true

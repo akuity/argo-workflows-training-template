@@ -7,6 +7,7 @@ spec:
     app: minio
   ports:
     - port: 9090
+      nodePort: 30090
       name: console
     - port: 9000
       name: s3
