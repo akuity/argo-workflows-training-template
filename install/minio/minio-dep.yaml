@@ -2,10 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: minio
+  namespace: minio
 spec:
   selector:
     matchLabels:
       app: minio
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
   template:
     metadata:
       labels:
@@ -38,7 +42,16 @@ spec:
           args:
             - minio server /data --console-address :9090
           env:
-            - name: MINIO_ACCESS_KEY
+            - name: MINIO_ROOT_USER
               value: admin
-            - name: MINIO_SECRET_KEY
+            - name: MINIO_ROOT_PASSWORD
               value: password
+          lifecycle:
+            # Create a bucket called mybucket
+            postStart:
+              exec:
+                command:
+                -  "/bin/sh"
+                - "-c"
+                - |
+                  while ! mc mb /data/mybucket; do echo 'Wait minio to startup...' && sleep 0.5; done;
