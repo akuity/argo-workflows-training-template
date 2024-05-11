@@ -1,10 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: archive-me-
+  generateName: archived-wf-
   labels:
     workflows.argoproj.io/archive-strategy: "always"
 spec:
+  ttlStrategy:
+    secondsAfterCompletion: 5
+
   entrypoint: whalesay
   templates:
   - name: whalesay
