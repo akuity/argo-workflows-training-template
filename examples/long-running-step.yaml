@@ -1,0 +1,19 @@
+# Example long-running workflow that will attempt to protect its pods from being disrupted
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: long-running-step-
+spec:
+  entrypoint: sleep
+  podDisruptionBudget:
+    # Provide arbitrary big number if you don't know how many pods workflow creates
+    minAvailable: 1
+  templates:
+  - name: sleep
+    # Use nodeSelector or affinity to ensure the pod is scheduled on a stable node
+    nodeSelector:
+      eks.amazonaws.com/nodegroup: stable-nodegroup
+    container:
+      image: alpine:latest
+      command: [sh, -c]
+      args: ["sleep 24h"]

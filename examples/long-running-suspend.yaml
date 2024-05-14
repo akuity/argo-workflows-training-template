@@ -1,0 +1,31 @@
+# Example long-running workflow that will suspend itself indefinitely
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: long-running-suspend-
+spec:
+  entrypoint: long-running-suspend
+  templates:
+  - name: long-running-suspend
+    steps:
+    - - name: async
+        template: async
+    - - name: wait
+        template: wait
+    - - name: do-more
+        template: do-more
+
+  - name: async
+    container:
+      image: appropriate/curl:latest
+      command: [curl]
+      args: [https://catfact.ninja/fact]
+
+  - name: wait
+    suspend: {}
+
+  # External process should call: `argo resume <workflow-name>` to resume
+  - name: do-more
+    container:
+      image: docker/whalesay
+      command: ["cowsay", "hello world"]

@@ -14,3 +14,10 @@ images:
 patches:
   - path: argo-server-deploy.yaml
   - path: argo-server-nodeport.yaml
+  - path: executor-plugins.yaml
+  - path: executor-plugins-rbac.yaml
+    target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: ClusterRole
+      name: argo-cluster-role

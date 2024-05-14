@@ -1,0 +1,22 @@
+
+# Additional RBAC necessary for executor plugins and HTTP templates
+- op: add
+  path: /rules/-
+  value:
+    apiGroups:
+      - ""
+    resources:
+      - secrets
+    resourceNames:
+      - argo-workflows-agent-ca-certificates
+    verbs:
+      - get
+- op: add
+  path: /rules/-
+  value:
+    apiGroups:
+      - argoproj.io
+    resources:
+      - workflowtasksets/status
+    verbs:
+      - patch

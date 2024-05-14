@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: http-template-
+spec:
+  entrypoint: main
+  templates:
+    - name: main
+      steps:
+        - - name: cat-fact
+            template: cat-fact
+        - - name: print-fact
+            template: print-fact
+            arguments:
+              parameters:
+                - name: fact
+                  value: "{{steps.cat-fact.outputs.result}}"
+
+    - name: cat-fact
+      http:
+        url: https://catfact.ninja/fact
+
+    - name: print-fact
+      inputs:
+        parameters:
+          - name: fact
+      container:
+        image: docker/whalesay:latest
+        command: [cowsay]
+        args: ["{{inputs.parameters.fact}}"]

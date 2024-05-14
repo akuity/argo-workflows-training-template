@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ExecutorPlugin
+metadata:
+  name: hello
+spec:
+  sidecar:
+    container:
+      command:
+        - python
+        - -u # disables output buffering
+        - -c
+      image: python:alpine3.6
+      name: hello-executor-plugin
+      ports:
+        - containerPort: 4355
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534 # nobody
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"

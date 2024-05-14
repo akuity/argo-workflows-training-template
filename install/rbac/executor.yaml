@@ -5,12 +5,27 @@ kind: ClusterRole
 metadata:
   name: executor
 rules:
+  # Basic RBAC necessary for normal workflow pods
   - apiGroups:
       - argoproj.io
     resources:
       - workflowtaskresults
     verbs:
       - create
+      - patch
+  # Additional (optional) privileges for the workflow agent (used for HTTP and plugin templates)
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - workflowtasksets
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - workflowtasksets/status
+    verbs:
       - patch
 
 ---
