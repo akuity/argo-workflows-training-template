@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: template-semaphore-
+spec:
+  entrypoint: template-semaphore
+  templates:
+  - name: template-semaphore
+    steps:
+    - - name: acquire-lock
+        template: acquire-lock
+        arguments:
+          parameters:
+          - name: seconds
+            value: "{{item}}"
+        withParam: '["1","2","3","4","5"]'
+
+  - name: acquire-lock
+    synchronization:
+      semaphore:
+        configMapKeyRef:
+          name: my-semaphores
+          key: template
+    container:
+      image: alpine:latest
+      command: [sh, -c]
+      args: ["sleep 20; echo acquired lock"]

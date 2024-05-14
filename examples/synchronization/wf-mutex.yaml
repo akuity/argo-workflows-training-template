@@ -1,12 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: sleep-
+  generateName: wf-mutex-
 spec:
   entrypoint: sleep
+  synchronization:
+    mutex:
+      name: wf-mutex
   templates:
   - name: sleep
     container:
       image: busybox:latest
       command: [sh, -c]
-      args: ["sleep 5m"]
+      args: ["sleep 1m"]

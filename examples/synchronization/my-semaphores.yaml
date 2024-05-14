@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: my-semaphores
+data:
+  workflow: "2"
+  template: "3"
