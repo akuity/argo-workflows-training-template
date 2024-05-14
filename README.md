@@ -174,6 +174,26 @@ STEP                     TEMPLATE  PODNAME                                   DUR
    └─✔ whalesay          whalesay  template-mutex-7q2s2-whalesay-2294686955  5s
 ```
 
+## Memoization
+
+Submit a workflow that memoizes one of its step. Repeat this and notice second run is immediate and has same value.
+```
+argo submit examples/memoization/memoization.yaml
+
+argo submit examples/memoization/memoization.yaml
+```
+
+Observe/clear the memoization cache
+```
+kubectl get -n argo cm memo-cache
+kubectl delete -n argo cm memo-cache
+```
+
+Submit it a third time and notice output is different
+```
+argo submit examples/memoization/memoization.yaml
+```
+
 
 ## HTTP Template
 

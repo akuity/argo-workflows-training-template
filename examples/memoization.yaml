@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: memoization-
+spec:
+  entrypoint: main
+  templates:
+  - name: main
+    steps:
+    - - name: memoize-num
+        template: memoize-num
+    - - name: print-num
+        template: print-num
+        arguments:
+          parameters:
+          - name: num
+            value: "{{steps.memoize-num.outputs.parameters.num}}"
+
+  - name: memoize-num
+    memoize:
+      key: randkey
+      maxAge: 10m
+      cache:
+        configMap:
+          name: memo-cache
+    container:
+      image: busybox:latest
+      command: [sh, -c]
+      args: ["echo $((1 + $RANDOM % 1000)) | tee /tmp/random.txt"]
+    outputs:
+      parameters:
+      - name: num
+        valueFrom:
+          path: /tmp/random.txt
+
+  - name: print-num
+    inputs:
+      parameters:
+      - name: num
+    container:
+      image: docker/whalesay:latest
+      command: [cowsay]
+      args: ["{{inputs.parameters.num}}"]
+

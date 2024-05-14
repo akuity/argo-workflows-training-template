@@ -21,3 +21,9 @@ patches:
       version: v1
       kind: ClusterRole
       name: argo-cluster-role
+  - path: memoization-rbac.yaml
+    target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: ClusterRole
+      name: argo-cluster-role

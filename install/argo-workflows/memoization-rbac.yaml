@@ -1,0 +1,13 @@
+
+# Additional RBAC necessary for memoization
+- op: add
+  path: /rules/-
+  value:
+    apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - create
+      - patch
+      - update
