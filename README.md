@@ -51,7 +51,50 @@ Unless specified, Workflows will run pods with the `default` ServiceAccount. The
 
 ```
 kubectl apply -k install/rbac
+```
+
+## Hello World
+
+This is the "hello world" workflow that runs a single container that prints hello world.
+
+```
 argo submit --watch examples/hello-world.yaml
+```
+
+## Steps & DAGs
+
+Workflows provides `steps` and `dag` templates that allow sequencing of pods in a workflow.
+
+```
+argo submit --watch examples/steps.yaml
+argo submit --watch examples/dag-diamond.yaml
+```
+
+## ContainerSets
+
+Another way to sequence containers is with a containerSet template, which runs all containers as a DAG in the same pod. This is useful when running them as different pods is inefficient, or they need to share a filesystem.
+
+```
+argo submit --watch examples/containerset-dag.yaml
+```
+
+## Scripts
+
+A workflow step can be an inlined script that is passed to an image with a programming language interpreter like python.
+
+```
+argo submit --watch examples/scripts-python.yaml
+```
+
+## Resources
+
+Workflows p which provides a way to create any type of kubernetes resources (including CRDs) using a resource template.
+
+```
+# First apply the necessary RBAC for the workflow (to create a job)
+kubectl apply -f examples/resource/resource-rbac.yaml
+
+argo submit --watch examples/resource/resource.yaml
 ```
 
 ## Artifact Repositories
@@ -72,7 +115,7 @@ argo submit --watch examples/artifacts/artifact-passing.yaml
 
 Artifacts can be seen in the Minio console
 
-## Synchronnization
+## Synchronization
 
 Apply the semaphore used in the next examples:
 ```
@@ -99,7 +142,6 @@ wf-semaphore-9fdd9   Running               2s    2s         0
 ```
 
 ### Workflow Mutex
-
 
 Submit the wf-semaphore twice.
 ```
@@ -193,7 +235,6 @@ Submit it a third time and notice output is different
 ```
 argo submit examples/memoization/memoization.yaml
 ```
-
 
 ## HTTP Template
 

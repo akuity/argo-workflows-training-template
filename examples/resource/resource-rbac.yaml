@@ -1,0 +1,41 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: wf-resource-role
+rules:
+  # Basic RBAC necessary for normal workflow pods
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - workflowtaskresults
+    verbs:
+      - create
+      - patch
+  # Workflow must have privileges to create job
+  - apiGroups:
+      - batch
+    resources:
+      - jobs
+    verbs:
+      - create
+      - get
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: wf-resource-role
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: wf-resource-role
+subjects:
+  - kind: ServiceAccount
+    name: wf-resource-role
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: wf-resource-role
