@@ -294,6 +294,17 @@ argo submit --watch examples/archived-wf.yaml
 
 The workflow will be deleted 5 seconds after completion (using `ttlStrategy`), but will still visible from the workflow UI.
 
+## WorkflowTemplates
+
+WorkflowTemplates are a way to separate the definition of a workflow from its invocation.
+
+```
+# Create the `hello-world-template` WorkflowTemplate:
+kubectl apply -f examples/workflow-templates/hello-world-template.yaml
+
+# Then submit a workflow from that template:
+argo submit --watch --from=workflowtemplate/hello-world-template -p message=foo
+```
 
 ## Local Argo Server
 
