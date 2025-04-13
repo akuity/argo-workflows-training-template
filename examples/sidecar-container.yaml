@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: sidecar-alpine-
+spec:
+  entrypoint: sidecar-alpine-example
+  templates:
+  - name: sidecar-alpine-example
+    container:
+      image: alpine:latest
+      command: [sh, -c]
+      args: ["echo 'Main container started'; sleep 5; echo 'Main container done'"]
+    sidecars:
+    - name: sidecar-container
+      image: busybox
+      command: [sh, -c]
+      args: ["while true; do echo Sidecar logging...; sleep 2; done"]
